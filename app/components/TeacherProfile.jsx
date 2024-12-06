@@ -1,12 +1,16 @@
 import Image from "next/image";
 import React from "react";
+import TeacherEdit from "./TeacherEdit";
+import {Modal,ModalContent, useDisclosure} from '@nextui-org/modal'
 
 const TeacherProfile = () => {
+  const {isOpen,onOpen,onOpenChange,onClose}=useDisclosure()
+
   return (
-    <div className="p-5 px-9 flex flex-col gap-7">
+    <div className="p-5 px-9 flex flex-col gap-7 h-screen">
       <div className="flex justify-between">
         <p className="text-[28px] font-bold">Profile Information</p>
-        <button className="bg-[#009DEB] w-[208px] h-[68px] rounded-xl border-b-4 border-t-1 border-x-1 border-[#1481B8] flex justify-center items-center gap-2 hover:bg-[#3992bf]">
+        <button className="bg-[#009DEB] w-[208px] h-[68px] rounded-xl border-b-4 border-t-1 border-x-1 border-[#1481B8] flex justify-center items-center gap-2 hover:bg-[#3992bf]" onClick={onOpen}>
           <div className="bg-white rounded-t-lg rounded-br-lg p-1 rounded-bl-sm">
             <Image width={20} height={20} src="/assets/editPen.svg" />
           </div>
@@ -49,6 +53,13 @@ const TeacherProfile = () => {
           </p>
         </div>
       </div>
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} backdrop='opaque' hideCloseButton size="4xl" scrollBehavior="inside">
+          <ModalContent>
+          
+              <TeacherEdit onClose={onClose}/>
+            
+          </ModalContent>
+        </Modal>
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React from 'react'
 
 const LogOutModal = () => {
   return (
-    <div className='bg-white w-[40%] rounded-lg flex flex-col gap-4 justify-center p-5'>
+    <div className='bg-white w-[560px] rounded-lg flex flex-col gap-4 justify-center p-5'>
         <p className='text-[24px] text-[#6E190C] font-bold'>Log Out</p>
         <p className='text-[18px]'>"Are you sure you want to log out"</p>
         <div className='flex gap-3 mt-6'>

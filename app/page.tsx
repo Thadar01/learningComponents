@@ -7,11 +7,13 @@ import WaitingRoom from '@/app/components/WaitingRoom'
 import TeacherProfile from '@/app/components/TeacherProfile'
 import StudentProfile from '@/app/components/StudentProfile'
 import LogOutModal from '@/app/components/LogOutModal'
+import StudentEdit from '@/app/components/StudentEdit'
+import TeacherEdit from '@/app/components/TeacherEdit'
 
 
 
 export default function Home() {
   return (
-  <LogOutModal/>
+  <TeacherProfile/>
   );
 }
