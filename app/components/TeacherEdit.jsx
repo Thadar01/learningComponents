@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 
 const TeacherEdit = ({ onClose }) => {
+  
   const [name, setName] = useState("Daw Aye Aye");
   const [bio, setBio] = useState("Professional English Teacher");
   const [year, setYear] = useState(4);
