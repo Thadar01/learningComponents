@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 const Avatar = () => {
 
     const {rive, RiveComponent} = useRive({
-        src: "/assets/allcharacter.riv",
+        src: "/assets/aiavatar.riv",
         artboard: "AvatarArtboard",
         stateMachines: "State Machine 1",
         autoplay: true,
@@ -23,7 +23,7 @@ const Avatar = () => {
         if(rive && isTalking && isEyeMove && isDisgust){
             isTalking.value=true
             isEyeMove.value=true
-            isDisgust.value=true
+            // isDisgust.value=true
         }
       },[rive,isTalking])
   return (
