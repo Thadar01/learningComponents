@@ -15,15 +15,15 @@ const Avatar = () => {
 
       const isTalking=useStateMachineInput(rive,'State Machine 1', 'isTalking')
       const isEyeMove=useStateMachineInput(rive,'State Machine 1', 'isEyeMove')
-      const isDisgust=useStateMachineInput(rive,'State Machine 1', 'isDisgust')
+      const isCheerFul=useStateMachineInput(rive,'State Machine 1', 'isCheer')
 
 
 
       useEffect(()=>{
-        if(rive && isTalking && isEyeMove && isDisgust){
+        if(rive && isTalking && isEyeMove && isCheerFul){
             isTalking.value=true
             isEyeMove.value=true
-            // isDisgust.value=true
+            isCheerFul.value=true
         }
       },[rive,isTalking])
   return (
