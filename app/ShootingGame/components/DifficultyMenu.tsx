@@ -9,21 +9,21 @@ const DifficultyMenu = () => {
         Select Game Difficulty
       </h1>
       <div className="w-[90%] flex justify-between">
-        <Link className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2" href={'/ShootingGame/ShootingInstruction'}>
+      <Link className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2" href={{pathname:'/ShootingGame/ShootingInstruction',query:{name:'easy'}}}>
           <TiStarFullOutline className="text-white" />
           Easy
         </Link>
-        <button className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2">
+        <Link className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2" href={{pathname:'/ShootingGame/ShootingInstruction',query:{name:'med'}}}>
           <TiStarFullOutline className="text-white" />
           <TiStarFullOutline className="text-white" />
           Medium
-        </button>
-        <button className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2">
+        </Link>
+        <Link className="border-x-1 border-t-1 border-b-4 border-[#1481B8] w-[30%] bg-[#009DEB] text-white p-2 rounded-xl flex justify-center items-center gap-2" href={{pathname:'/ShootingGame/ShootingInstruction',query:{name:'hard'}}}>
           <TiStarFullOutline className="text-white" />
           <TiStarFullOutline className="text-white" />
           <TiStarFullOutline className="text-white" />
           Hard
-        </button>
+        </Link>
       </div>
     </div>
   );

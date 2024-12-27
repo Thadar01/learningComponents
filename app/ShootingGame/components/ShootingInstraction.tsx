@@ -1,8 +1,14 @@
+'use client'
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import React from 'react'
 import { BiSolidUpArrow } from "react-icons/bi";
 import { BiSolidDownArrow } from "react-icons/bi";
 import { BiSolidRightArrowCircle } from "react-icons/bi";
+
 const ShootingInstraction = () => {
+  const Params=useSearchParams();
+  const name=Params.get('name')
   return (
     <div  className='w-[40%] flex flex-col  justify-center items-center gap-5'>
     <div className="bg-black bg-opacity-50 w-[100%] flex flex-col  justify-center items-center p-7 rounded-xl gap-6 ">
@@ -28,10 +34,10 @@ const ShootingInstraction = () => {
         </div>
       </div>
     </div>
-    <div className='bg-[#009DEB] w-[140px] h-[50px] flex justify-center items-center rounded-xl border-x-1 border-t-1 border-b-4 border-[#1481B8] gap-2'>
+    <Link className='bg-[#009DEB] w-[140px] h-[50px] flex justify-center items-center rounded-xl border-x-1 border-t-1 border-b-4 border-[#1481B8] gap-2' href={{pathname:'/ShootingGame/ChoosingPlane',query:{name:name}}}>
           <p className='text-white  font-bold'>Next</p>
           <BiSolidRightArrowCircle className='text-white text-[25px]'/>
-                  </div>
+    </Link>
     </div>
   )
 }
