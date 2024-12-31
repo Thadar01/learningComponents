@@ -1,9 +1,9 @@
 import Phaser from "phaser";
-import { fruitList,questions } from "../data/fruitData";
+import { MedfruitList,Medquestions } from "../data/fruitData";
 import Laser from "../entities/Laser";
 import { sharedData } from "../data/sharedData";
 
-export default class EasyScene extends Phaser.Scene {
+export default class HardScene extends Phaser.Scene {
     bg: Phaser.GameObjects.Image | null=null;
     scoreText: Phaser.GameObjects.Text | null=null;
     easyScore: number;
@@ -13,6 +13,7 @@ export default class EasyScene extends Phaser.Scene {
     cursor: Phaser.Types.Input.Keyboard.CursorKeys| null=null;
     box1: Phaser.Physics.Arcade.Image| null=null;
     box2: Phaser.Physics.Arcade.Image| null=null;
+    box3: Phaser.Physics.Arcade.Image| null=null;
     gameNumber: number;
     inputEnabled: boolean;
     laserGroup: Phaser.Physics.Arcade.Group| null=null;
@@ -35,19 +36,18 @@ export default class EasyScene extends Phaser.Scene {
 
     preload() {
     
-        for (let i = 0; i < fruitList.length; i++) {
+        for (let i = 0; i < MedfruitList.length; i++) {
             for (let j = 0; j < 2; j++) {
-                const fruitName = fruitList[i][j].name;
-                const fruitSrc = fruitList[i][j].src;
+                const fruitName = MedfruitList[i][j].name;
+                const fruitSrc = MedfruitList[i][j].src;
 
                 this.load.image(fruitName, fruitSrc);
             }
         }
 
-        console.log('preloading')
-            for (let k = 0; k < questions.length; k++) {
-                const sound = questions[k].sound;
-                const name = questions[k].name;
+            for (let k = 0; k < Medquestions.length; k++) {
+                const sound = Medquestions[k].sound;
+                const name = Medquestions[k].name;
 
 
                 this.load.audio(name,sound);
@@ -56,14 +56,10 @@ export default class EasyScene extends Phaser.Scene {
     }
 
     create() {
-        // Background
         this.bg = this.add.image(0, 0, "bg").setOrigin(0, 0);
 
 
-             //Sound
-             
-
-        // Score
+         
    
 
 const graphics = this.add.graphics();
@@ -134,7 +130,7 @@ this.scoreText.setDepth(1); // This ensures the text is on top of the rectangle
             runChildUpdate: true,
         });
 
-        const choose = [this.box1, this.box2];
+        const choose = [this.box1, this.box2,this.box3];
 for (let i = 0; i < choose.length; i++) {
     if (choose[i]) {
         this.physics.add.overlap(this.laserGroup, choose[i]!, (laser, meteor) => {
@@ -149,6 +145,7 @@ for (let i = 0; i < choose.length; i++) {
 
             this.box1?.setVelocity(0);
             this.box2?.setVelocity(0);
+            this.box3?.setVelocity(0);
 
             // Add the explore image at the position of choose[i]
             const x = choose[i]!.x; // Safely access x
@@ -163,6 +160,7 @@ for (let i = 0; i < choose.length; i++) {
             setTimeout(() => {
                 this.box1?.setVisible(false);
                 this.box2?.setVisible(false);
+                this.box3?.setVisible(false)
                 this.explore?.destroy()
             }, 800);
             setTimeout(() => this.hitBox(), 2000);
@@ -171,7 +169,7 @@ for (let i = 0; i < choose.length; i++) {
                 this.collisionHandled = false; // Reset collision handling
             }, 500);
 
-            if (choose[i]?.texture.key === questions[this.gameNumber].name) {
+            if (choose[i]?.texture.key === Medquestions[this.gameNumber].name) {
                 this.easyScore = this.easyScore + 100;
                 this.scoreText?.setText(`Score: ${this.easyScore.toString()}`);
             } else {
@@ -188,9 +186,11 @@ for (let i = 0; i < choose.length; i++) {
 
 
         // Player-Box Collisions
-        if(this.box1 && this.box2 && this.player){
+        if(this.box1 && this.box2 && this.box3 && this.player){
             this.physics.add.collider(this.player, this.box1, () => this.destroyPlayer());
             this.physics.add.collider(this.player, this.box2, () => this.destroyPlayer());
+            this.physics.add.collider(this.player, this.box3, () => this.destroyPlayer());
+
     
         }
 
@@ -206,15 +206,19 @@ for (let i = 0; i < choose.length; i++) {
 
     update() {
         // Box Movement Logic
-        if(this.box1 && this.box2){
+        if(this.box1 && this.box3 && this.box2){
             if (this.box1.y < 150) {
-                this.box1.setVelocity(-30, 200);
-                this.box2.setVelocity(-30, 200);
-            } else if (this.box2.y > 650) {
-                this.box1.setVelocity(-30, -200);
-                this.box2.setVelocity(-30, -200);
+                this.box1.setVelocity(-35, 250);
+                this.box2.setVelocity(-35,250)
+                this.box3.setVelocity(-35, 250);
+            } else if (this.box3.y > 650) {
+                this.box1.setVelocity(-35, -250);
+                this.box2.setVelocity(-35,-250)
+
+                this.box3.setVelocity(-35, -250);
             }
-            this.box2.y = this.box1.y + 150;
+            this.box2.y = this.box1.y + 100;
+            this.box3.y=this.box2.y+100
         }
 
 
@@ -247,34 +251,46 @@ for (let i = 0; i < choose.length; i++) {
     }
 
     createBoxes(): void {
-        this.box1 = this.physics.add.image(1025, 250, fruitList[this.gameNumber][0].name);
-        this.box2 = this.physics.add.image(1025, 400, fruitList[this.gameNumber][1].name);
+        this.box1 = this.physics.add.image(1025, 250, MedfruitList[this.gameNumber][0].name);
+        this.box2 = this.physics.add.image(1025, 350, MedfruitList[this.gameNumber][1].name);
+        this.box3 = this.physics.add.image(1025, 450, MedfruitList[this.gameNumber][2].name);
 
-        this.box1.setScale(0.3, 0.3);
-        this.box2.setScale(0.3, 0.3);
+        
 
-        this.box1.setVelocity(-30, 200);
-        this.box2.setVelocity(-30, 200);
+        this.box1.setScale(0.25, 0.25);
+        this.box2.setScale(0.25, 0.25);
+        this.box3.setScale(0.25, 0.25);
+
+
+        this.box1.setVelocity(-35, 250);
+        this.box2.setVelocity(-35, 250);
+        this.box3.setVelocity(-35, 250);
+
 
         this.box1.setCollideWorldBounds(true);
         this.box2.setCollideWorldBounds(true);
+        this.box3.setCollideWorldBounds(true)
 
         this.physics.add.collider(this.box1, this.box2);
+        this.physics.add.collider(this.box2,this.box3)
 
       
     }
 
     destroyPlayer(): void {
-        if (this.player && this.box1 && this.box2) {
+        if (this.player && this.box1 && this.box2 && this.box3) {
             
             this.player.setVisible(false);
             this.player = null;
             this.box1.setVelocity(0);
             this.box2.setVelocity(0);
+            this.box3.setVelocity(0);
+
 
             setTimeout(() => {
                 this.box1?.setVisible(true);
                 this.box2?.setVisible(true);
+                this.box3?.setVisible(true)
             }, 800);
 
             setTimeout(() => {
@@ -303,10 +319,12 @@ for (let i = 0; i < choose.length; i++) {
         }
         
         this.box1?.setPosition(1030, 250);
-        this.box2?.setPosition(1030, 400);
+        this.box2?.setPosition(1030, 350);
+        this.box3?.setPosition(1030,450)
 
-        this.box1?.setVelocity(-30, 200);
-        this.box2?.setVelocity(-30, 200);
+        this.box1?.setVelocity(-35, 250);
+        this.box2?.setVelocity(-35, 250);
+        this.box3?.setVelocity(-35,250)
     }
 
     hitBox(): void {
@@ -316,14 +334,17 @@ for (let i = 0; i < choose.length; i++) {
             this.restoreBoxPosition();
             this.box1?.setVisible(true);
             this.box2?.setVisible(true);
+            this.box3?.setVisible(true)
         
 
-        if (this.gameNumber < fruitList.length - 1 && this.life !==0) {
+        if (this.gameNumber < MedfruitList.length - 1 && this.life !==0) {
             this.gameNumber += 1;
             console.log(this.gameNumber);
 
-            this.box1?.setTexture(fruitList[this.gameNumber][0].name)
-            this.box2?.setTexture(fruitList[this.gameNumber][1].name)
+            this.box1?.setTexture(MedfruitList[this.gameNumber][0].name)
+            this.box2?.setTexture(MedfruitList[this.gameNumber][1].name)
+            this.box3?.setTexture(MedfruitList[this.gameNumber][2].name)
+
             this.playSound()
             
 
@@ -334,7 +355,7 @@ for (let i = 0; i < choose.length; i++) {
     }
 
      playSound():void  {
-        this.sound.play(questions[this.gameNumber].name, {
+        this.sound.play(Medquestions[this.gameNumber].name, {
             loop: false,
         });
     };
@@ -350,16 +371,16 @@ for (let i = 0; i < choose.length; i++) {
         const score = this.easyScore;
     
         // Check if there is an existing score in localStorage
-        const storedScore = Number(localStorage.getItem('highestScore'));
+        const storedScore = Number(localStorage.getItem('hardhighestScore'));
     
         // If there is no stored score or if the current score is higher, update the localStorage
         if (isNaN(storedScore) || storedScore < score) {
-            localStorage.setItem('highestScore', score.toString());
+            localStorage.setItem('hardhighestScore', score.toString());
         }
     
         // Stop the scene and navigate to the result page with the score in the URL
         this.scene.stop();
-        window.location.href = `/ShootingGame/Result?score=${score}&difficulty=easy`;
+        window.location.href = `/ShootingGame/Result?score=${score}&difficulty=hard`;
     }
     
   

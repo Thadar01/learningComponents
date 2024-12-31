@@ -5,6 +5,8 @@ import Phaser from 'phaser';
 import EasyScene from './scene/EasyScene';
 import PreLoaderScene from './scene/PreLoaderScene';
 import { sharedData } from './data/sharedData';
+import MediumScene from './scene/MediumScene';
+import HardScene from './scene/HardScene';
 
 interface ShootingGameProps {
   level: string | null;
@@ -25,9 +27,9 @@ const MainShootingGame: React.FC<ShootingGameProps> = ({ level,plane }) => {
     if (level === 'easy') {
       scenes.push(EasyScene);
     }else if(level==='med'){
-      scenes.push()
+      scenes.push(MediumScene)
     }else if(level=='hard'){
-      scenes.push()
+      scenes.push(HardScene)
     }
 
     const config: Phaser.Types.Core.GameConfig = {
