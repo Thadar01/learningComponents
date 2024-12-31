@@ -10,6 +10,11 @@ import Link from 'next/link';
 
 export default function Home() {
   return (
-    <Link href={'/ShootingGame'}>Shooting Game</Link>
+    <div>
+          <Link href={'/ShootingGame'}>Shooting Game</Link>
+          <Link href={'/FillingWords'}>Filling Words</Link>
+
+    </div>
+    
   );
 }

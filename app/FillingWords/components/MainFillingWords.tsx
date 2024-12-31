@@ -2,18 +2,14 @@
 
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
-import EasyScene from './scene/EasyScene';
-import PreLoaderScene from './scene/PreLoaderScene';
-import { sharedData } from './data/sharedData';
-import MediumScene from './scene/MediumScene';
-import HardScene from './scene/HardScene';
+import EasyFilling from './scenes/EasyFilling';
 
-interface ShootingGameProps {
+
+interface FillingGameProps {
   level: string | null;
-  plane:string | null
 }
 
-const MainShootingGame: React.FC<ShootingGameProps> = ({ level,plane }) => {
+const MainFillingWords: React.FC<FillingGameProps> = ({ level }) => {
   const gameRef = useRef<Phaser.Game | null>(null);
 
   useEffect(() => {
@@ -21,20 +17,20 @@ const MainShootingGame: React.FC<ShootingGameProps> = ({ level,plane }) => {
       return; // Prevent reinitialization
     }
 
-    sharedData.plane = plane || '';
+    // sharedData.plane = plane || '';
 
-    const scenes = [PreLoaderScene];
+    const scenes = [];
     if (level === 'easy') {
-      scenes.push(EasyScene);
-    }else if(level==='med'){
-      scenes.push(MediumScene)
-    }else if(level=='hard'){
-      scenes.push(HardScene)
-    }
+      scenes.push(EasyFilling);}
+    // }else if(level==='med'){
+    //   scenes.push(MediumScene)
+    // }else if(level=='hard'){
+    //   scenes.push(HardScene)
+    // }
 
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
-      width: 1000,
+      width: 984,
       height: 700,
       scene: scenes,
       physics: {
@@ -65,4 +61,4 @@ const MainShootingGame: React.FC<ShootingGameProps> = ({ level,plane }) => {
   );
 };
 
-export default MainShootingGame;
+export default MainFillingWords;

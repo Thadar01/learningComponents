@@ -68,7 +68,6 @@ export default class EasyScene extends Phaser.Scene {
 
 const graphics = this.add.graphics();
 graphics.fillStyle(0x000000, 0.3);
-const padding = this.scoreText?.padding;
 graphics.fillRoundedRect(
     40,  // X position
     40,  // Y position
@@ -150,15 +149,14 @@ for (let i = 0; i < choose.length; i++) {
             this.box1?.setVelocity(0);
             this.box2?.setVelocity(0);
 
-            // Add the explore image at the position of choose[i]
-            const x = choose[i]!.x; // Safely access x
-            const y = choose[i]!.y; // Safely access y
+            const x = choose[i]!.x; 
+            const y = choose[i]!.y;
             let exploreimage='blueExplore'
 
             if(sharedData.plane==='pinkjet'){
                 exploreimage='pinkExplore'
             }
-            this.explore = this.add.image(x, y, exploreimage).setScale(0.2,0.2); // Use the correct texture key for 'blueExplore'
+            this.explore = this.add.image(x, y, exploreimage).setScale(0.2,0.2); 
 
             setTimeout(() => {
                 this.box1?.setVisible(false);
