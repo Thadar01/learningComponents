@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Phaser from 'phaser';
 import EasyFilling from './scenes/EasyFilling';
+import MediumFilling from './scenes/MediumFilling';
 
 
 interface FillingGameProps {
@@ -21,10 +22,11 @@ const MainFillingWords: React.FC<FillingGameProps> = ({ level }) => {
 
     const scenes = [];
     if (level === 'easy') {
-      scenes.push(EasyFilling);}
-    // }else if(level==='med'){
-    //   scenes.push(MediumScene)
-    // }else if(level=='hard'){
+      scenes.push(EasyFilling);
+    }else if(level==='med'){
+      scenes.push(MediumFilling)
+    }
+    // else if(level=='hard'){
     //   scenes.push(HardScene)
     // }
 

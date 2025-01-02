@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import fillingData from "../data/fillingData";
 
-export default class EasyFilling extends Phaser.Scene {
+export default class MediumFilling extends Phaser.Scene {
   // dataWords: string[] = ['run', 'yellow', 'green', 'apple', 'orange', 'cup'];
   currentWordIndex: number = 0;
   matchedLetters: string[] = [];
@@ -20,7 +20,6 @@ export default class EasyFilling extends Phaser.Scene {
  score:number=0
  scoreText:Phaser.GameObjects.Text|null=null
  image:Phaser.GameObjects.Image|null=null
- soundIcon:Phaser.GameObjects.Image|null=null
  slotBg:Phaser.GameObjects.Graphics|null=null
  water:Phaser.GameObjects.Image|null=null
  crying:Phaser.GameObjects.Image|null=null
@@ -36,7 +35,6 @@ export default class EasyFilling extends Phaser.Scene {
     this.load.image('bg','/assets/FillingWords/Bg2.png')
     this.load.image('balloon', '/assets/FillingWords/HotAirBalloon.png');
 
-    this.load.image('sound', '/assets/FillingWords/sound.png');
     this.load.image('heart','/assets/ShootingGame/heart.png')
     this.load.image('water','/assets/FillingWords/Water.png')
     this.load.image('crying','/assets/FillingWords/crying.png')
@@ -45,7 +43,6 @@ export default class EasyFilling extends Phaser.Scene {
 
     for (let i = 0; i < fillingData.length; i++) {
       this.load.image(fillingData[i].name, fillingData[i].sorce);
-      this.load.audio(fillingData[i].name, fillingData[i].sound);
     }
   }
 
@@ -102,8 +99,6 @@ export default class EasyFilling extends Phaser.Scene {
 
     this.image=this.add.image(720,210,fillingData[this.currentWordIndex].name).setScale(0.3,0.3)
 
-    this.soundIcon=this.add.image(820,160,'sound')
-    this.soundIcon.setInteractive().on('pointerdown', this.playCurrentSound, this);
 
 
     const alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
@@ -183,14 +178,7 @@ alphabet.forEach((letter, index) => {
     });
   }
 
-  playCurrentSound() {
-    if (this.soundIcon && this.currentWordIndex >= 0 && this.currentWordIndex < fillingData.length) {
-      // Play the sound related to the current index
-      const soundName = fillingData[this.currentWordIndex].name;
-      
-      this.sound.play(soundName); // Play the sound
-    }
-  }
+
 
   startTimer() {
     if (this.timerEvent) {
@@ -433,7 +421,7 @@ alphabet.forEach((letter, index) => {
   
 
     setTimeout(()=> {
-      this.crying?.setVisible(false)
+      this.crying?.destroy()
       this.water?.setVisible(false)
     },700)
 
@@ -464,13 +452,14 @@ alphabet.forEach((letter, index) => {
       // console.log('yes')
       const yvalue=Math.round(this.balloon.y)
       console.log(yvalue)
-      if(yvalue===500){
+
+      if(yvalue ===500){
+        console.log('touch')
         this.collision()
       }
     }
     if(this.life===0){
       this.image?.setVisible(false)
-      this.soundIcon?.setVisible(false)
       this.balloon?.setVisible(false)
       this.stopWordSlots()
       this.alphabetButtons.forEach(button => button.setInteractive(false));
@@ -486,20 +475,19 @@ alphabet.forEach((letter, index) => {
 
 
   toResult(){
-    this.sound.stopAll();
     
     // Get the current score
     const score = this.score;
 
     // Check if there is an existing score in localStorage
-    const storedScore = Number(localStorage.getItem('fillingEasyScore'));
+    const storedScore = Number(localStorage.getItem('fillingMediumScore'));
 
     // If there is no stored score or if the current score is higher, update the localStorage
     if (isNaN(storedScore) || storedScore < score) {
-        localStorage.setItem('fillingEasyScore', score.toString());
+        localStorage.setItem('fillingMediumScore', score.toString());
     }
     this.scene.stop()
     // Stop the scene and navigate to the result page with the score in the URL
-    window.location.href = `/FillingWords/Result?score=${score}&difficulty=easy`;
+    window.location.href = `/FillingWords/Result?score=${score}&difficulty=medium`;
   }
 }
