@@ -51,7 +51,7 @@ export default class MediumFilling extends Phaser.Scene {
     bg.setOrigin(0, 0); // Set origin to top-left corner
   
        
-    this.balloon = this.physics.add.image(150, 200, 'balloon').setScale(0.6,0.6);
+    this.balloon = this.physics.add.image(150, 200, 'balloon').setScale(0.8,0.8);
 
 
     
@@ -373,7 +373,7 @@ alphabet.forEach((letter, index) => {
           } else {
             console.log('All words completed!');
             
-            window.location.href = '/FillingWords/Result';
+            this.toResult()
           }
         }
       } else {
@@ -415,8 +415,8 @@ alphabet.forEach((letter, index) => {
   }
 
   collision() {
-    this.crying=this.add.image(150,500,'crying').setScale(0.2,0.2)
-    this.water=this.add.image(150,560,'water')
+    this.crying=this.add.image(160,500,'crying').setScale(0.3,0.3)
+    this.water=this.add.image(150,580,'water')
     this.balloon?.setVisible(false)
   
 

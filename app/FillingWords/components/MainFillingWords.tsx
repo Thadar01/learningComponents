@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useRef } from 'react';
-import Phaser from 'phaser';
-import EasyFilling from './scenes/EasyFilling';
-import MediumFilling from './scenes/MediumFilling';
-
+import { useEffect, useRef } from "react";
+import Phaser from "phaser";
+import EasyFilling from "./scenes/EasyFilling";
+import MediumFilling from "./scenes/MediumFilling";
+import HardFilling from "./scenes/HardFilling";
 
 interface FillingGameProps {
   level: string | null;
@@ -21,14 +21,13 @@ const MainFillingWords: React.FC<FillingGameProps> = ({ level }) => {
     // sharedData.plane = plane || '';
 
     const scenes = [];
-    if (level === 'easy') {
+    if (level === "easy") {
       scenes.push(EasyFilling);
-    }else if(level==='med'){
-      scenes.push(MediumFilling)
+    } else if (level === "med") {
+      scenes.push(MediumFilling);
+    } else if (level == "hard") {
+      scenes.push(HardFilling);
     }
-    // else if(level=='hard'){
-    //   scenes.push(HardScene)
-    // }
 
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.AUTO,
@@ -36,14 +35,14 @@ const MainFillingWords: React.FC<FillingGameProps> = ({ level }) => {
       height: 700,
       scene: scenes,
       physics: {
-        default: 'arcade',
+        default: "arcade",
         arcade: {
           gravity: { x: 0, y: 0 },
           debug: false,
         },
       },
-      parent: 'phaser-container',
-      backgroundColor: '#FFFFFF',
+      parent: "phaser-container",
+      backgroundColor: "#FFFFFF",
     };
 
     gameRef.current = new Phaser.Game(config);

@@ -1,7 +1,7 @@
 import Phaser from "phaser";
 import fillingData from "../data/fillingData";
 
-export default class EasyFilling extends Phaser.Scene {
+export default class HardFilling extends Phaser.Scene {
   // dataWords: string[] = ['run', 'yellow', 'green', 'apple', 'orange', 'cup'];
   currentWordIndex: number = 0;
   matchedLetters: string[] = [];
@@ -44,7 +44,6 @@ export default class EasyFilling extends Phaser.Scene {
 
 
     for (let i = 0; i < fillingData.length; i++) {
-      this.load.image(fillingData[i].name, fillingData[i].sorce);
       this.load.audio(fillingData[i].name, fillingData[i].sound);
     }
   }
@@ -94,15 +93,10 @@ export default class EasyFilling extends Phaser.Scene {
     this.scoreText.setDepth(1)
 
     
-    const imageBox = this.add.graphics();
-    imageBox.lineStyle(2, 0x1481B8); // 4px thickness, blue border
-    imageBox.fillStyle(0xFFFFFF); // White fill color
-    imageBox.fillRoundedRect(600, 130, 250, 150, 10);
-    imageBox.strokeRoundedRect(600, 130, 250, 150, 10);
+ 
 
-    this.image=this.add.image(720,210,fillingData[this.currentWordIndex].name).setScale(0.3,0.3)
 
-    this.soundIcon=this.add.image(820,160,'sound')
+    this.soundIcon=this.add.image(720,220,'sound').setScale(1.3,1.3)
     this.soundIcon.setInteractive().on('pointerdown', this.playCurrentSound, this);
 
 
@@ -197,7 +191,7 @@ alphabet.forEach((letter, index) => {
       this.timerEvent.remove(); // Remove previous timer event
     }
   
-    this.remainingTime = 10; // Reset timer to 1 minute for each new word
+    this.remainingTime = 180; // Reset timer to 1 minute for each new word
   
     this.timerEvent = this.time.addEvent({
       delay: 1000,
@@ -231,7 +225,7 @@ alphabet.forEach((letter, index) => {
         this.balloon?.setVelocityY(200)
 
       }else{
-        this.balloon?.setVelocityY(0)
+        this.balloon.setVelocityY(0)
       }
     }
   
@@ -385,13 +379,13 @@ alphabet.forEach((letter, index) => {
           } else {
             console.log('All words completed!');
             
-           this.toResult()
+            this.toResult()
           }
         }
       } else {
         if (this.balloon) {
           this.isClicked = true;
-          this.balloon?.setVelocityY(50);
+          this.balloon.setVelocityY(50);
           setTimeout(() => {
             this.balloon?.setVelocityY(0);
           }, 1000);
@@ -492,14 +486,14 @@ alphabet.forEach((letter, index) => {
     const score = this.score;
 
     // Check if there is an existing score in localStorage
-    const storedScore = Number(localStorage.getItem('fillingEasyScore'));
+    const storedScore = Number(localStorage.getItem('fillingHardScore'));
 
     // If there is no stored score or if the current score is higher, update the localStorage
     if (isNaN(storedScore) || storedScore < score) {
-        localStorage.setItem('fillingEasyScore', score.toString());
+        localStorage.setItem('fillingHardScore', score.toString());
     }
     this.scene.stop()
     // Stop the scene and navigate to the result page with the score in the URL
-    window.location.href = `/FillingWords/Result?score=${score}&difficulty=easy`;
+    window.location.href = `/FillingWords/Result?score=${score}&difficulty=hard`;
   }
 }

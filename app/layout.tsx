@@ -36,17 +36,12 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          "min-h-screen bg-sky-200 font-sans antialiased",
-          fontSans.variable,
+          "min-h-screen bg-[#021744] font-sans antialiased",
+          fontSans.variable
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-         
-          
-            <main >
-              {children}
-            </main>
-         
+          <main>{children}</main>
         </Providers>
       </body>
     </html>
