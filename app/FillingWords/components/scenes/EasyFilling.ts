@@ -10,7 +10,6 @@ export default class EasyFilling extends Phaser.Scene {
   wordCon: Phaser.GameObjects.Container[] = [];
   alphabetButtons: Phaser.GameObjects.Container[] = [];
   balloon: Phaser.Physics.Arcade.Image | null = null;
-  water: Phaser.Physics.Arcade.Image | null = null;
   isDown: boolean = false;
   isClicked: boolean = false;
   timerText: Phaser.GameObjects.Text | null = null;
@@ -22,6 +21,9 @@ export default class EasyFilling extends Phaser.Scene {
  scoreText:Phaser.GameObjects.Text|null=null
  image:Phaser.GameObjects.Image|null=null
  soundIcon:Phaser.GameObjects.Image|null=null
+ slotBg:Phaser.GameObjects.Graphics|null=null
+ water:Phaser.GameObjects.Image|null=null
+ crying:Phaser.GameObjects.Image|null=null
 
 
  
@@ -36,6 +38,9 @@ export default class EasyFilling extends Phaser.Scene {
 
     this.load.image('sound', '/assets/FillingWords/sound.png');
     this.load.image('heart','/assets/ShootingGame/heart.png')
+    this.load.image('water','/assets/FillingWords/Water.png')
+    this.load.image('crying','/assets/FillingWords/crying.png')
+
 
 
     for (let i = 0; i < fillingData.length; i++) {
@@ -50,8 +55,6 @@ export default class EasyFilling extends Phaser.Scene {
   
        
     this.balloon = this.physics.add.image(150, 200, 'balloon').setScale(0.6,0.6);
-    this.water = this.physics.add.image(0, 700, 'water').setScale(1.5, 0.1);
-    this.water.setImmovable(true);
 
 
     
@@ -95,7 +98,7 @@ export default class EasyFilling extends Phaser.Scene {
     imageBox.lineStyle(2, 0x1481B8); // 4px thickness, blue border
     imageBox.fillStyle(0xFFFFFF); // White fill color
     imageBox.fillRoundedRect(600, 130, 250, 150, 10);
-        imageBox.strokeRoundedRect(600, 130, 250, 150, 10);
+    imageBox.strokeRoundedRect(600, 130, 250, 150, 10);
 
     this.image=this.add.image(720,210,fillingData[this.currentWordIndex].name).setScale(0.3,0.3)
 
@@ -221,13 +224,18 @@ alphabet.forEach((letter, index) => {
       this.timerEvent.remove();
     }
   
-    // Change to the next word and restart the timer
-
-  
-    // Clear matched letters and clicked buttons
+   
    
   
-    this.balloon?.setVelocityY(200)
+    if(this.balloon?.y){
+      const yvalue=Math.round(this.balloon.y)
+      if(yvalue<=500){
+        this.balloon?.setVelocityY(200)
+
+      }else{
+        this.balloon.setVelocityY(0)
+      }
+    }
   
    
   }
@@ -236,7 +244,7 @@ alphabet.forEach((letter, index) => {
   displayWordSlots() {
     const currentWord = fillingData[this.currentWordIndex].name;
     
-    const boxX = 600; // x-position of the rectangle
+    const boxX = 600; 
     const boxY = 130; // y-position of the rectangle
     const boxWidth = 250; // width of the rectangle
     const boxHeight = 150; // height of the rectangle
@@ -279,11 +287,11 @@ alphabet.forEach((letter, index) => {
       const x = slotXStart + index * slotSpacing;
   
       // Create the background for each slot
-      const slotBg = this.add.graphics();
-      slotBg.fillStyle(0xFFFFFF, 1);
-      slotBg.lineStyle(5, 0x5A6A72);
-      slotBg.strokeRoundedRect(0, 3, slotWidth, slotWidth, 10);
-      slotBg.fillRoundedRect(0, 2, slotWidth, slotWidth, 10);
+     this.slotBg = this.add.graphics();
+      this.slotBg.fillStyle(0xFFFFFF, 1);
+      this.slotBg.lineStyle(5, 0x5A6A72);
+      this.slotBg.strokeRoundedRect(0, 3, slotWidth, slotWidth, 10);
+      this.slotBg.fillRoundedRect(0, 2, slotWidth, slotWidth, 10);
   
       // Create the text for each slot
       const slotText = this.add.text(20, 20, '', {
@@ -294,7 +302,7 @@ alphabet.forEach((letter, index) => {
       }).setOrigin(0.5);
   
       // Create the container for each word slot and its text
-      const wordSlot = this.add.container(x, slotY, [slotBg, slotText]);
+      const wordSlot = this.add.container(x, slotY, [this.slotBg, slotText]);
       this.wordSlots.push(slotText);
       this.wordCon.push(wordSlot);
     });
@@ -321,8 +329,21 @@ alphabet.forEach((letter, index) => {
         currentWord.split('').forEach((char, index) => {
           if (char === letter) {
             this.wordSlots[index].setText(char);
+
+            const slotBg = this.wordCon[index].list[0] as Phaser.GameObjects.Graphics;
+            slotBg.clear(); // Clear any previous styles
+            slotBg.fillStyle(0xFFFFFF, 1); // Green for correct letter
+            slotBg.lineStyle(4, 0x1481B8);
+            slotBg.strokeRoundedRect(0, 1, 40, 40, 10);
+            slotBg.fillRoundedRect(0, 0, 40, 40, 10);
+          
           }
         });
+
+     
+     
+
+        
 
         if (currentWord.split('').every((char) => this.matchedLetters.includes(char))) {
           if (this.currentWordIndex < fillingData.length - 1) {
@@ -344,7 +365,7 @@ alphabet.forEach((letter, index) => {
           } else {
             console.log('All words completed!');
             
-            window.location.href = `/Result?score=${this.score}`;
+            window.location.href = '/FillingWords/Result';
           }
         }
       } else {
@@ -386,28 +407,53 @@ alphabet.forEach((letter, index) => {
   }
 
   collision() {
-    this.balloon?.setVisible(false);
-    this.currentWordIndex++;
-    this.balloon?.setVelocityY(0);
+    this.crying=this.add.image(150,500,'crying').setScale(0.2,0.2)
+    this.water=this.add.image(150,560,'water')
+    this.balloon?.setVisible(false)
+    if(this.balloon){
+      this.balloon.y=200
+    }
+
+    setTimeout(()=> {this.crying?.setVisible(false)
+      this.water?.setVisible(false)
+    },700)
+
+    setTimeout(()=>this.balloon?.setVisible(true),1200)
+
+
+    if(this.currentWordIndex < fillingData.length && this.life !== 0 && this.life>0){
+        setTimeout(()=>this.currentWordIndex++,800)  ;
+        this.life--
+        this.lifeText?.setText(`${this.life}`)
+
+    }else if (this.life===0){
+      window.location.href='/FillingWords/Result'
+
+    }
     this.matchedLetters = [];
     this.clickedButtons.clear();
     this.displayWordSlots();
     this.resetAlphabetButtons();
     this.resetBalloonPosition();
-    setTimeout(() => this.balloon?.setVisible(true), 1000);
+    this.startTimer(); // Restart timer for the next word
+    
     this.image?.setTexture(fillingData[this.currentWordIndex].name)
+   
 
-    this.life--
-    this.lifeText?.setText(` ${this.life}`)
+   
   }
 
   update() {
     if(this.balloon?.y){
+      // console.log('yes')
       const yvalue=Math.round(this.balloon.y)
       if(yvalue===500){
         console.log('touch')
         this.collision()
       }
+    }
+    if(this.life===0){
+      window.location.href='/FillingWords/Result'
     }
   }
 }
