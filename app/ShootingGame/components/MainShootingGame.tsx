@@ -18,7 +18,7 @@ const MainShootingGame: React.FC<ShootingGameProps> = ({ level,plane }) => {
 
   useEffect(() => {
     if (gameRef.current) {
-      return; // Prevent reinitialization
+      return; // Prevent reinitialization//
     }
 
     sharedData.plane = plane || '';
